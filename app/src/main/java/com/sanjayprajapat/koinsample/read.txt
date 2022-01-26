@@ -1,0 +1,11 @@
+
+Koin is Dsl , a light container and a programatic api \
+(Domain specific language) it's make code easy and readable
+eg- Sql
+
+
+
+module - it creates a module in Koin which would be used by Koin to provide all the dependencies.
+single - it creates a singleton that can be used across the app as a singular instance.
+factory - it provides a bean definition, which will create a new instance each time it is injected.
+get() - it is used in the constructor of a class to provide the required dependency
