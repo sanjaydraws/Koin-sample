@@ -3,6 +3,7 @@ package com.sanjayprajapat.koinsample.component
 import com.sanjayprajapat.koinsample.data.Car
 import com.sanjayprajapat.koinsample.data.Engine
 import com.sanjayprajapat.koinsample.data.Main
+import com.sanjayprajapat.koinsample.viewmodel.MainViewModel
 import org.koin.core.component.KoinApiExtension
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -21,5 +22,7 @@ class Component() :KoinComponent{
     val car1:Car = get()
 
     val main: Main by inject()
+
+    val mainViewModel:MainViewModel by inject   ()
 
 }

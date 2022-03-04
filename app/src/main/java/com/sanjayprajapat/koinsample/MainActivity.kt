@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.sanjayprajapat.koinsample.component.Component
 import com.sanjayprajapat.koinsample.databinding.ActivityMainBinding
+import com.sanjayprajapat.koinsample.viewmodel.MainViewModel
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinApiExtension
 
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         component.car.getCar()
-
         component.main.getDemo()
+        component.mainViewModel.getTest()
     }
 }
