@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.gson.GsonBuilder
 import com.sanjayprajapat.koinsample.BuildConfig
 import com.sanjayprajapat.koinsample.api.Apis
+import com.sanjayprajapat.koinsample.utils.SharedPreferencesHelper
 import okhttp3.*
 import okhttp3.internal.cacheGet
 import okhttp3.logging.HttpLoggingInterceptor
@@ -31,7 +32,7 @@ private const val READ_TIMEOUT = 15L
 val RetrofitModule = module {
     single { Cache(androidApplication().cacheDir, 10L * 1024 * 1024) }
     single { GsonBuilder().create() }
-    single { retrofitHttpClient(androidContext(),) }
+    single { retrofitHttpClient(androidContext(),get()) }
 //    single { retrofitBuilder() }
     single {
         Interceptor { chain ->
@@ -46,12 +47,16 @@ val RetrofitModule = module {
 
 }
 
-
-fun Scope.retrofitHttpClient( context: Context, sharedPreferencesHelper: SharedPreferencesHelper): Retrofit {
-    val builder: Retrofit.Builder = Retrofit.Builder()
+private fun Scope.retrofitBuilder(): Retrofit {
+    return Retrofit.Builder()
         .baseUrl(Apis.API_URL)
         .addConverterFactory(GsonConverterFactory.create(get()))
+        //.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .client(get())
+        .build()
+}
 
+private fun Scope.retrofitHttpClient( context: Context, sharedPreferencesHelper: SharedPreferencesHelper): OkHttpClient {
     val httpClient:OkHttpClient.Builder = OkHttpClient.Builder().apply {
         cache(get())
         connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
@@ -71,8 +76,7 @@ fun Scope.retrofitHttpClient( context: Context, sharedPreferencesHelper: SharedP
         //  ChuckerInterceptor.Builder(context).build())
 
     }
-
-    return builder.client(httpClient.build()).build()
+    return httpClient.build()
 }
 
 
