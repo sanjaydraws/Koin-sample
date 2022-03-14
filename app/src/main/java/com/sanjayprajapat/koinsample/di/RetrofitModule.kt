@@ -29,7 +29,7 @@ private const val READ_TIMEOUT = 15L
 
 
 
-val RetrofitModule = module {
+val retrofitModule = module {
     single { Cache(androidApplication().cacheDir, 10L * 1024 * 1024) }
     single { GsonBuilder().create() }
     single { retrofitHttpClient(androidContext(),get()) }
