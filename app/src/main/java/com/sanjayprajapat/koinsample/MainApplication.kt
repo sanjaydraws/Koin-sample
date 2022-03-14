@@ -1,6 +1,5 @@
 package com.sanjayprajapat.koinsample
 
-import android.app.Application
 import androidx.multidex.MultiDexApplication
 import com.sanjayprajapat.koinsample.di.*
 import com.sanjayprajapat.koinsample.module.appModule
@@ -9,9 +8,9 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 
-class BaseApplication:MultiDexApplication() {
+class MainApplication:MultiDexApplication() {
     companion object {
-        lateinit var instance: BaseApplication
+        lateinit var instance: MainApplication
             private set
     }
     override fun onCreate() {
@@ -20,7 +19,7 @@ class BaseApplication:MultiDexApplication() {
         // first start Koin(to use)
        startKoin {
            androidLogger(Level.DEBUG)
-           androidContext(this@BaseApplication)
+           androidContext(this@MainApplication)
            //can keep list of modules
            modules(listOf(
                appModule,
