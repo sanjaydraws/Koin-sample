@@ -3,6 +3,7 @@ package com.sanjayprajapat.koinsample.Repository
 import android.content.Context
 import com.sanjayprajapat.koinsample.R
 import com.sanjayprajapat.koinsample.api.models.AllPosts
+import com.sanjayprajapat.koinsample.api.models.Posts
 import com.sanjayprajapat.koinsample.api.models.Resource
 import com.sanjayprajapat.koinsample.api.requests.PostsService
 import com.sanjayprajapat.koinsample.utils.GsonHelper
@@ -60,8 +61,10 @@ class UserPostsRepository constructor( val context: Context?, private val apiSer
                 )
             }
             if (response?.code() == 200) {
-                val posts  = gson.convertFromJson(response.body().toString(),AllPosts::class.java)
-                return Resource.success(data = posts)
+//                val x = gson?.convertToArrayList<Posts>(response.body().toString())
+//                val posts  = gson.convertFromJson(response.body().toString(),AllPosts::class.java)
+                  val allpost = AllPosts(response.body())
+                return Resource.success(data = allpost)
             } else if (response?.code() == 400) {
                 return Resource.error(message = response.message()?:context?.getString(R.string.default_error_message))
             }

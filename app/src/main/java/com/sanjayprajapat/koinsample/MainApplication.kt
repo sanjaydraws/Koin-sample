@@ -24,10 +24,10 @@ class MainApplication:MultiDexApplication() {
            modules(listOf(
                appModule,
                interfaceModule,
-               viewModelModule,
                apiModule,
                repositoryModule,
-               retrofitModule
+               retrofitModule,
+               viewModelModule
            ))
 //            modules(
 //                demoModule

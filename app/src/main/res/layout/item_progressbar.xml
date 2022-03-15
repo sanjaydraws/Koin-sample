@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.sanjayprajapat.koinsample.api.models.Status" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="text"
+            type="String" />
+
+        <variable
+            name="isEnabled"
+            type="Boolean" />
+
+        <variable
+            name="status"
+            type="Status" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constProgressBtn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical">
+
+        <ProgressBar
+            tools:visibility="visible"
+            android:id="@+id/progressbar"
+            android:visibility="@{status == Status.LOADING ? View.VISIBLE : View.INVISIBLE, default = gone}"
+            android:layout_width="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:indeterminateTint="?attr/colorPrimary"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

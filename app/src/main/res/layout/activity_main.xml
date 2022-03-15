@@ -12,14 +12,36 @@
         android:layout_height="match_parent"
         tools:context=".ui.main.MainActivity">
 
-        <TextView
+        <Button
+            android:id="@+id/referesh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hello World!"
+            android:text="referesh"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+        <androidx.core.widget.NestedScrollView
+            app:layout_constraintTop_toBottomOf="@id/referesh"
+            android:layout_width="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="0dp">
+            <TextView
+                android:id="@+id/text_view_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000" />
+        </androidx.core.widget.NestedScrollView>
 
+        <include
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            layout="@layout/item_progressbar"
+            android:id="@+id/progress_circular"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -37,17 +37,30 @@ class MainActivity : AppCompatActivity() {
         component.main.getDemo()
         component.mainViewModel.getTest()
 
-
+        binding?.referesh?.setOnClickListener {
+            homeViewModel.getPosts()
+        }
         homeViewModel.getPosts()
 
         homeViewModel.userPostResponse.observe(this, Observer {
             it?:return@Observer
+            binding?.progressCircular?.status = it.status
             when(it.status){
                 Status.ERROR ->{
                     Log.d(TAG, "onCreate: ${it.message}")
                 }
                 Status.SUCCESS ->{
-                    Log.d(TAG, "onCreate: ${it.data}")
+                    val posts  = it.data?.allPosts
+                    if (posts != null) {
+                        for (post in posts) {
+                            var content: String = ""
+                            content += "Id: ${post.id} \n"
+                            content += "UserId: ${post.userId} \n"
+                            content += "Title: ${post.title} \n"
+                            content += "Text: ${post.description} \n"
+                            binding?.textViewResult?.append(content)
+                        }
+                    }
                 }
                 Status.LOADING ->{
                     Log.d(TAG, "onCreate: ${it.message}")

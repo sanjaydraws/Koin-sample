@@ -1,6 +1,7 @@
 package com.sanjayprajapat.koinsample.di
 
 import android.content.Context
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.gson.GsonBuilder
 import com.sanjayprajapat.koinsample.BuildConfig
 import com.sanjayprajapat.koinsample.api.Apis
@@ -20,7 +21,6 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by Sanjay Prajapat on 14/03/2022 12:06 AM
  * Copyright (c) 2022 . All rights reserved.
- * Last modified
  * */
 
 private const val CONNECT_TIMEOUT = 15L
@@ -33,7 +33,7 @@ val retrofitModule = module {
     single { Cache(androidApplication().cacheDir, 10L * 1024 * 1024) }
 //    single { GsonBuilder().create() }
     single { retrofitHttpClient(androidContext(),get()) }
-//    single { retrofitBuilder() }
+    single { retrofitBuilder() }
     single {
         Interceptor { chain ->
             chain.proceed( chain.request().newBuilder().apply {
@@ -56,6 +56,9 @@ private fun Scope.retrofitBuilder(): Retrofit {
         .build()
 }
 
+/**
+ * get OkHttpClient client
+ * */
 private fun Scope.retrofitHttpClient( context: Context, sharedPreferencesHelper: SharedPreferencesHelper): OkHttpClient {
     val httpClient:OkHttpClient.Builder = OkHttpClient.Builder().apply {
         cache(get())
@@ -71,10 +74,10 @@ private fun Scope.retrofitHttpClient( context: Context, sharedPreferencesHelper:
                     //.addHeader("Language", "en")
                 }.build())
         }
-        addInterceptor(httpLoggingInterceptor())
-        //  addInterceptor(
-        //  ChuckerInterceptor.Builder(context).build())
-
+        if(BuildConfig.DEBUG){
+            addInterceptor(httpLoggingInterceptor())
+            addInterceptor(ChuckerInterceptor.Builder(context).build())
+        }
     }
     return httpClient.build()
 }
