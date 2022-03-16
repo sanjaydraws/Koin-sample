@@ -20,7 +20,6 @@ import java.util.concurrent.TimeUnit
 
 /**
  * Created by Sanjay Prajapat on 14/03/2022 12:06 AM
- * Copyright (c) 2022 . All rights reserved.
  * */
 
 private const val CONNECT_TIMEOUT = 15L
@@ -76,7 +75,7 @@ private fun Scope.retrofitHttpClient( context: Context, sharedPreferencesHelper:
         }
         if(BuildConfig.DEBUG){
             addInterceptor(httpLoggingInterceptor())
-            addInterceptor(ChuckerInterceptor.Builder(context).build())
+            addInterceptor(ChuckerInterceptor.Builder(context).build()) // chucker logging interceptor
         }
     }
     return httpClient.build()
