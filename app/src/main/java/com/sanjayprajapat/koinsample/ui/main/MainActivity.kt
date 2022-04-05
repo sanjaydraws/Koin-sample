@@ -3,6 +3,7 @@ package com.sanjayprajapat.koinsample.ui.main
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.sanjayprajapat.koinsample.api.models.Status
 import com.sanjayprajapat.koinsample.component.Component
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity() {
             binding?.progressCircular?.status = it.status
             when(it.status){
                 Status.ERROR ->{
-                    Log.d(TAG, "onCreate: ${it.message}")
+                    Toast.makeText(this, it.message ,Toast.LENGTH_LONG).show()
                 }
                 Status.SUCCESS ->{
                     val posts  = it.data?.allPosts

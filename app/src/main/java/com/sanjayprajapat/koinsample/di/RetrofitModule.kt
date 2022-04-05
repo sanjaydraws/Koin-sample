@@ -5,18 +5,21 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.gson.GsonBuilder
 import com.sanjayprajapat.koinsample.BuildConfig
 import com.sanjayprajapat.koinsample.api.Apis
+import com.sanjayprajapat.koinsample.api.NetworkConnectionInterceptor
+import com.sanjayprajapat.koinsample.api.NoConnectivityException
 import com.sanjayprajapat.koinsample.utils.SharedPreferencesHelper
+import com.sanjayprajapat.koinsample.utils.isConnectedToInternet
 import okhttp3.*
 import okhttp3.internal.cacheGet
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.logger.AndroidLogger
 import org.koin.core.scope.Scope
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-
 
 /**
  * Created by Sanjay Prajapat on 14/03/2022 12:06 AM
@@ -65,13 +68,17 @@ private fun Scope.retrofitHttpClient( context: Context, sharedPreferencesHelper:
         writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
         readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
         retryOnConnectionFailure(true)
-        addInterceptor{
+        addInterceptor {
+            if(isConnectedToInternet(context = context) != true){
+                throw NoConnectivityException(context = context)
+            }else{
                 it.proceed( it.request().newBuilder().apply {
                     header("Accept", "application/json")
                     //.addHeader("Interceptor-Header", "xyz")
                     //.addHeader("Authorization", sharedPreferencesHelper.getLoginToken() ?:"")//login token
                     //.addHeader("Language", "en")
                 }.build())
+            }
         }
         if(BuildConfig.DEBUG){
             addInterceptor(httpLoggingInterceptor())
@@ -86,10 +93,12 @@ private fun Scope.retrofitHttpClient( context: Context, sharedPreferencesHelper:
  * log http request & response with logging interceptor
  * */
 fun httpLoggingInterceptor(): HttpLoggingInterceptor {
+
     val httpLoggingInterceptor = HttpLoggingInterceptor()
     httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
     return httpLoggingInterceptor
 }
+
 
 
 fun interceptor():HttpLoggingInterceptor{

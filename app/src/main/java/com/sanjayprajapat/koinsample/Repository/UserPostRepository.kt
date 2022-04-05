@@ -2,6 +2,7 @@ package com.sanjayprajapat.koinsample.Repository
 
 import android.content.Context
 import com.sanjayprajapat.koinsample.R
+import com.sanjayprajapat.koinsample.api.NoConnectivityException
 import com.sanjayprajapat.koinsample.api.models.AllPosts
 import com.sanjayprajapat.koinsample.api.models.Posts
 import com.sanjayprajapat.koinsample.api.models.Resource
@@ -49,9 +50,9 @@ class UserPostsRepository constructor( val context: Context?, private val apiSer
     suspend fun getPosts(
     ): Resource<AllPosts> {
 
-        if (isConnectedToInternet(context = context) != true) {
-            return Resource.error(data = null, context?.getString(R.string.no_internet_connected))
-        }
+//        if (isConnectedToInternet(context = context) != true) {
+//            return Resource.error(data = null, context?.getString(R.string.no_internet_connected))
+//        }
         try {
             val response = apiService.getPosts()
             if (response?.isSuccessful == false) {
@@ -71,6 +72,10 @@ class UserPostsRepository constructor( val context: Context?, private val apiSer
             return Resource.error( message = response?.message()?: context?.getString(R.string.default_error_message))
         } catch (e: Exception) {
             e.printStackTrace()
+            if(e is NoConnectivityException) {
+                // show No Connectivity message to user or do whatever you want.
+                return Resource.error(data = null, context?.getString(R.string.no_internet_connected))
+            }
             return Resource.error(data = null, context?.getString(R.string.default_error_message))
         }
     }
